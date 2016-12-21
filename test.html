@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    function Rand() {
+        var seedNum = 0;
+        return {
+            seed: function (seed) {
+                seedNum = seed;
+            },
+            next: function () {
+                seedNum = (seedNum * 9301 + 49297) % 233280;
+                return seedNum;
+            }
+        };
+    }
+
+    function getCodeSet(code) {
+        var codeAry = " abcdefghijklmnopqrstuvwxyz".split("");
+        var codeAry2 = codeAry.slice();
+        var len = codeAry.length;
+        var rnd = new Rand();
+        rnd.seed(code);
+        for (var i = 0; i < len * 5; i++) {
+            var m = rnd.next() % len;
+            var n = rnd.next() % len;
+
+            var v = codeAry[n];
+            codeAry[n] = codeAry[m];
+            codeAry[m] = v;
+        }
+
+        var codeSet = {};
+        for (var i2 = 0; i2 < len; i2++) {
+            codeSet[codeAry2[i2]] = codeAry[i2];
+        }
+        return codeSet;
+    }
+
+    function getDecodeSet(code) {
+        var codeSet = getCodeSet(code);
+        var decodeSet = {};
+        Object.keys(codeSet)
+                .forEach(function (k) {
+                    decodeSet[codeSet[k]] = k;
+                });
+        return decodeSet;
+    }
+
+    function encode(code, text) {
+        var codeSet = getCodeSet(code);
+        return text
+                .split("")
+                .map(function (x) {
+                    return codeSet[x]
+                })
+                .join("");
+    }
+
+    function decode(code, text) {
+        var codeSet = getDecodeSet(code);
+        return text
+                .split("")
+                .map(function (x) {
+                    return codeSet[x]
+                })
+                .join("");
+    }
+
+    var rst = encode(456, "this is a test");
+    console.log(rst);
+    console.log(decode(456, rst));
+</script>
+
+</body>
+</html>

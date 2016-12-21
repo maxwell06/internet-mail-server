@@ -1,0 +1,16 @@
+{
+  "name": "chat_server",
+  "version": "0.0.0",
+  "description": "A simple chat service",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "maxwell",
+  "license": "BSD",
+  "private": true,
+  "dependencies": {
+    "express": "3.0.x",
+    "socket.io": "0.9.x"
+  }
+}
